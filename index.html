@@ -2,271 +2,241 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Phone Minecraft</title>
+<title>Mon Téléphone</title>
 <style>
   body {
-    margin: 0; padding: 0;
-    background: #000;
-    color: #32ff7e;
-    font-family: monospace;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    background: black;
+    color: lime;
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    user-select: none;
   }
   #phone {
-    width: 360px;
-    height: 640px;
-    background: #111;
-    border: 4px solid #32ff7e;
-    border-radius: 20px;
-    box-shadow: 0 0 20px #32ff7e;
-    display: flex;
-    flex-direction: column;
+    width: 320px;
+    height: 600px;
+    background: #222;
+    border-radius: 30px;
+    margin: 20px auto;
+    padding: 10px;
+    box-sizing: border-box;
+    position: relative;
     overflow: hidden;
   }
-  #screen {
-    flex: 1;
-    padding: 20px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    background: transparent;
-  }
-  #screen > div {
-    display: none;
-    flex-direction: column;
-    height: 100%;
-  }
-  #screen > div.active {
-    display: flex;
-  }
-  h1 {
-    margin: 0 0 10px 0;
-    font-size: 1.5em;
+  header {
     text-align: center;
-    letter-spacing: 1.5px;
+    padding: 5px 0;
+    border-bottom: 1px solid #555;
   }
-  .app-grid {
-    margin-top: 20px;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
-  }
-  .app-icon {
-    border: 2px solid #32ff7e;
-    border-radius: 12px;
-    background: #222;
-    padding: 15px 0;
-    text-align: center;
-    cursor: pointer;
-    user-select: none;
-    transition: background 0.25s, color 0.25s;
-    font-size: 1.1em;
-  }
-  .app-icon:hover {
-    background: #32ff7e;
-    color: #000;
-  }
-  .app-icon span {
-    display: block;
-    font-size: 2em;
-    margin-bottom: 6px;
-  }
-  button.back-btn {
-    align-self: flex-start;
-    margin-bottom: 15px;
-    background: none;
-    border: 1.5px solid #32ff7e;
-    color: #32ff7e;
-    padding: 8px 16px;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: background 0.25s, color 0.25s;
-  }
-  button.back-btn:hover {
-    background: #32ff7e;
-    color: #000;
-  }
-  /* Caméra */
-  #camera video {
-    width: 100%;
-    border-radius: 12px;
-    background: black;
-    flex-grow: 1;
-    object-fit: cover;
-  }
-  /* Musique */
-  #music-controls {
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-  }
-  #music-controls button {
-    background: #222;
-    border: 2px solid #32ff7e;
-    color: #32ff7e;
-    padding: 10px 15px;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 1em;
-  }
-  #music-controls button:hover {
-    background: #32ff7e;
-    color: #000;
-  }
-  #track-list {
-    margin-top: 15px;
-    overflow-y: auto;
-    max-height: 120px;
-  }
-  #track-list div {
-    padding: 8px;
-    cursor: pointer;
-    border-radius: 8px;
-  }
-  #track-list div:hover, #track-list .active-track {
-    background: #32ff7e;
-    color: #000;
-  }
-  /* Messages */
-  #messages-list {
-    background: #111;
-    border-radius: 8px;
-    flex-grow: 1;
-    padding: 10px;
-    overflow-y: auto;
-    font-size: 0.9em;
-    margin-bottom: 10px;
-  }
-  #messages-list p {
-    margin: 6px 0;
-    word-wrap: break-word;
-  }
-  #message-form {
-    display: flex;
-    gap: 10px;
-  }
-  #message-input {
-    flex-grow: 1;
-    padding: 8px;
-    border-radius: 8px;
-    border: 1.5px solid #32ff7e;
-    background: #222;
-    color: #32ff7e;
-    font-family: monospace;
-  }
-  #message-form button {
+  button {
     background: #32ff7e;
     border: none;
-    color: #000;
-    padding: 8px 16px;
-    border-radius: 8px;
+    border-radius: 10px;
+    color: black;
+    padding: 10px;
     cursor: pointer;
-    font-weight: bold;
+    margin: 5px 0;
+    width: 100%;
   }
-  #message-form button:hover {
-    background: #27ae60;
+  button:hover {
+    background: #28cc63;
+  }
+  .app {
+    display: none;
+  }
+  .app.active {
+    display: block;
+  }
+  #camera video {
+    width: 100%;
+    border-radius: 15px;
+  }
+  #gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 10px;
+  }
+  #gallery img {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 10px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: border-color 0.2s;
+  }
+  #gallery img:hover {
+    border-color: #32ff7e;
+  }
+  #previewModal {
+    display: none;
+    position: fixed;
+    z-index: 999;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.9);
+    justify-content: center;
+    align-items: center;
+  }
+  #previewModal img {
+    max-width: 90vw;
+    max-height: 90vh;
+    border-radius: 15px;
+  }
+  #previewModal.active {
+    display: flex;
+  }
+  #previewModal .close-btn {
+    position: absolute;
+    top: 20px; right: 20px;
+    font-size: 30px;
+    color: lime;
+    cursor: pointer;
   }
 </style>
 </head>
 <body>
-  <div id="phone">
-    <div id="screen">
-      <div id="home" class="active">
-        <h1>Mon Téléphone</h1>
-        <div class="app-grid">
-          <div class="app-icon" onclick="openApp('camera')"><span>📷</span>Caméra</div>
-          <div class="app-icon" onclick="openApp('music')"><span>🎵</span>Musique</div>
-          <div class="app-icon" onclick="openApp('messages')"><span>💬</span>Messages</div>
-          <div class="app-icon" onclick="openApp('settings')"><span>⚙️</span>Paramètres</div>
-        </div>
-      </div>
-
-      <!-- Caméra -->
-      <div id="camera">
-        <button class="back-btn" onclick="goHome()">← Retour</button>
-        <h1>Caméra</h1>
-        <video autoplay playsinline></video>
-        <p id="cam-error" style="color:#f55; margin-top:10px; display:none;">Impossible d'accéder à la caméra.</p>
-      </div>
-
-      <!-- Musique -->
-      <div id="music">
-        <button class="back-btn" onclick="goHome()">← Retour</button>
-        <h1>Musique</h1>
-        <audio id="audio-player" controls style="width:100%; border-radius:8px; background:#222;"></audio>
-        <div id="music-controls">
-          <button onclick="prevTrack()">⏮️</button>
-          <button onclick="playPause()">▶️/⏸️</button>
-          <button onclick="nextTrack()">⏭️</button>
-        </div>
-        <div id="track-list"></div>
-      </div>
-
-      <!-- Messages -->
-      <div id="messages">
-        <button class="back-btn" onclick="goHome()">← Retour</button>
-        <h1>Messages</h1>
-        <div id="messages-list"></div>
-        <form id="message-form">
-          <input type="text" id="message-input" placeholder="Écrire un message..." autocomplete="off" />
-          <button type="submit">Envoyer</button>
-        </form>
-      </div>
-
-      <!-- Paramètres -->
-      <div id="settings">
-        <button class="back-btn" onclick="goHome()">← Retour</button>
-        <h1>Paramètres</h1>
-        <p>Interface en développement...</p>
-      </div>
-    </div>
+<div id="phone">
+  <header>
+    <h1>Mon Téléphone</h1>
+  </header>
+  
+  <!-- Menu principal -->
+  <div id="home" class="app active">
+    <button onclick="openApp('camera')">📷 Caméra</button>
+    <button onclick="openApp('music')">🎵 Musique</button>
+    <button onclick="openApp('messages')">💬 Messages</button>
   </div>
+  
+  <!-- App Caméra -->
+  <div id="camera" class="app">
+    <button onclick="goHome()">← Retour</button>
+    <video autoplay playsinline></video>
+    <button onclick="takePhoto()">📸 Prendre une photo</button>
+    <div id="gallery"></div>
+    <p id="cam-error" style="color:#f55; margin-top:10px; display:none;">Impossible d'accéder à la caméra.</p>
+  </div>
+  
+  <!-- App Musique -->
+  <div id="music" class="app">
+    <button onclick="goHome()">← Retour</button>
+    <audio id="audio-player" controls></audio>
+    <div id="track-list"></div>
+  </div>
+  
+  <!-- App Messages -->
+  <div id="messages" class="app">
+    <button onclick="goHome()">← Retour</button>
+    <div id="messages-list" style="height:300px; overflow-y:auto; border:1px solid #32ff7e; padding:5px; margin-bottom:10px;"></div>
+    <form id="message-form">
+      <input type="text" id="message-input" placeholder="Tapez un message..." style="width:80%; padding:5px;" />
+      <button type="submit" style="width:18%;">Envoyer</button>
+    </form>
+  </div>
+</div>
+
+<!-- Modal preview photo -->
+<div id="previewModal">
+  <span class="close-btn" onclick="closePreview()">×</span>
+  <img src="" alt="Aperçu photo" />
+</div>
 
 <script>
   // Navigation apps
-  function openApp(id) {
-    document.querySelectorAll('#screen > div').forEach(el => el.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-    if(id === 'camera') startCamera();
+  function openApp(app) {
+    document.querySelectorAll('.app').forEach(a => a.classList.remove('active'));
+    document.getElementById(app).classList.add('active');
   }
   function goHome() {
-    stopCamera();
     openApp('home');
   }
 
   // --- Caméra ---
-  let stream = null;
-  const video = document.querySelector('#camera video');
+  const cameraApp = document.getElementById('camera');
+  const videoElem = cameraApp.querySelector('video');
   const camError = document.getElementById('cam-error');
+  let stream = null;
 
   async function startCamera() {
-    if(stream) return; // déjà démarrée
-    camError.style.display = 'none';
     try {
       stream = await navigator.mediaDevices.getUserMedia({ video: true });
-      video.srcObject = stream;
+      videoElem.srcObject = stream;
+      camError.style.display = 'none';
     } catch(e) {
       camError.style.display = 'block';
-      console.error("Erreur caméra:", e);
+      console.error(e);
     }
   }
-  function stopCamera() {
-    if(stream) {
-      stream.getTracks().forEach(track => track.stop());
-      stream = null;
-      video.srcObject = null;
+
+  // Start camera when camera app is opened
+  document.querySelector('button[onclick="openApp(\'camera\')"]').addEventListener('click', () => {
+    startCamera();
+    loadGallery();
+  });
+
+  function takePhoto() {
+    if(!stream) {
+      alert("La caméra n'est pas activée !");
+      return;
     }
+    const canvas = document.createElement('canvas');
+    canvas.width = videoElem.videoWidth;
+    canvas.height = videoElem.videoHeight;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(videoElem, 0, 0, canvas.width, canvas.height);
+    const dataURL = canvas.toDataURL('image/png');
+    savePhoto(dataURL);
+    addPhotoToGallery(dataURL);
   }
+
+  // --- Galerie photos ---
+  function savePhoto(dataURL) {
+    let photos = JSON.parse(localStorage.getItem('phonePhotos') || '[]');
+    photos.push(dataURL);
+    localStorage.setItem('phonePhotos', JSON.stringify(photos));
+  }
+
+  function loadGallery() {
+    const gallery = document.getElementById('gallery');
+    gallery.innerHTML = '';
+    let photos = JSON.parse(localStorage.getItem('phonePhotos') || '[]');
+    photos.forEach((src, i) => {
+      const img = document.createElement('img');
+      img.src = src;
+      img.alt = "Photo " + (i+1);
+      img.onclick = () => openPreview(src);
+      gallery.appendChild(img);
+    });
+  }
+  function addPhotoToGallery(dataURL) {
+    const gallery = document.getElementById('gallery');
+    const img = document.createElement('img');
+    img.src = dataURL;
+    img.alt = "Nouvelle photo";
+    img.onclick = () => openPreview(dataURL);
+    gallery.appendChild(img);
+  }
+
+  // --- Preview modal ---
+  const previewModal = document.getElementById('previewModal');
+  const previewImg = previewModal.querySelector('img');
+  function openPreview(src) {
+    previewImg.src = src;
+    previewModal.classList.add('active');
+  }
+  function closePreview() {
+    previewModal.classList.remove('active');
+    previewImg.src = '';
+  }
+  previewModal.addEventListener('click', e => {
+    if(e.target === previewModal) closePreview();
+  });
 
   // --- Musique ---
   const tracks = [
-    { title: "Calm Forest", url: "https://cdn.pixabay.com/download/audio/2022/08/21/audio_6db95a26e6.mp3?filename=calm-forest-ambient-nature-10936.mp3" },
-    { title: "Relaxing Piano", url: "https://cdn.pixabay.com/download/audio/2021/12/14/audio_38dbe7a438.mp3?filename=relaxing-piano-13793.mp3" },
-    { title: "Upbeat Happy", url: "https://cdn.pixabay.com/download/audio/2022/04/14/audio_7b1c08f97f.mp3?filename=upbeat-happy-10825.mp3" }
+    { title: "Track 1", url: "https://cdn.pixabay.com/download/audio/2022/03/24/audio_8bc5de00f3.mp3?filename=spirit-128.mp3" },
+    { title: "Track 2", url: "https://cdn.pixabay.com/download/audio/2021/11/29/audio_681a7798aa.mp3?filename=happy-rock-1-124.mp3" },
+    { title: "Track 3", url: "https://cdn.pixabay.com/download/audio/2022/03/31/audio_e35e0a08be.mp3?filename=summer-128.mp3" },
   ];
   let currentTrackIndex = 0;
   const audioPlayer = document.getElementById('audio-player');
@@ -283,7 +253,9 @@
     tracks.forEach((track, i) => {
       const div = document.createElement('div');
       div.textContent = track.title;
-      if(i === currentTrackIndex) div.classList.add('active-track');
+      if(i === currentTrackIndex) div.style.fontWeight = 'bold';
+      div.style.cursor = 'pointer';
+      div.style.padding = '5px';
       div.onclick = () => loadTrack(i);
       trackListEl.appendChild(div);
     });
@@ -300,8 +272,7 @@
     let prev = (currentTrackIndex - 1 + tracks.length) % tracks.length;
     loadTrack(prev);
   }
-  // Charger la première piste au démarrage musique
-  document.getElementById('music').addEventListener('click', () => {
+  document.querySelector('button[onclick="openApp(\'music\')"]').addEventListener('click', () => {
     if(!audioPlayer.src) loadTrack(currentTrackIndex);
   });
 

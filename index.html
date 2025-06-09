@@ -1,20 +1,156 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8">
-    <title>Mon Téléphone</title>
-    <style>
-      body {
-        background: black;
-        color: lime;
-        font-family: sans-serif;
-        text-align: center;
-        padding-top: 50px;
-      }
-    </style>
-  </head>
-  <body>
-    <h1>📱 Téléphone Minecraft</h1>
-    <button onclick="alert('App ouverte !')">App 1</button>
-  </body>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Phone Minecraft</title>
+<style>
+  body {
+    margin: 0; padding: 0;
+    background: #000;
+    font-family: 'Courier New', Courier, monospace;
+    color: #32ff7e;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  #phone {
+    width: 360px;
+    height: 640px;
+    background: #111;
+    border: 4px solid #32ff7e;
+    border-radius: 24px;
+    box-shadow: 0 0 20px #32ff7e;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  #screen {
+    flex: 1;
+    background: #000;
+    padding: 20px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+  }
+  #home, #music, #messages, #settings {
+    flex: 1;
+    display: none;
+    flex-direction: column;
+  }
+  .active {
+    display: flex !important;
+  }
+  h1 {
+    margin: 0 0 10px 0;
+    font-size: 1.5em;
+    text-align: center;
+    letter-spacing: 2px;
+  }
+  .app-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-top: 20px;
+  }
+  .app-icon {
+    background: #222;
+    border: 2px solid #32ff7e;
+    border-radius: 12px;
+    padding: 15px;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.3s;
+  }
+  .app-icon:hover {
+    background: #32ff7e;
+    color: #000;
+  }
+  .app-icon span {
+    display: block;
+    font-size: 1.8em;
+    margin-bottom: 8px;
+  }
+  button.back-btn {
+    background: none;
+    border: 1.5px solid #32ff7e;
+    color: #32ff7e;
+    padding: 8px 16px;
+    border-radius: 12px;
+    cursor: pointer;
+    align-self: flex-start;
+    margin-bottom: 15px;
+    transition: background 0.3s;
+  }
+  button.back-btn:hover {
+    background: #32ff7e;
+    color: #000;
+  }
+  .message {
+    flex: 1;
+    background: #111;
+    padding: 10px;
+    border-radius: 8px;
+    overflow-y: auto;
+    font-size: 0.9em;
+  }
+  .message p {
+    margin: 6px 0;
+  }
+</style>
+</head>
+<body>
+  <div id="phone">
+    <div id="screen">
+      <!-- Ecran d'accueil -->
+      <div id="home" class="active">
+        <h1>Mon Téléphone</h1>
+        <div class="app-grid">
+          <div class="app-icon" onclick="openApp('music')"><span>🎵</span>Musique</div>
+          <div class="app-icon" onclick="openApp('messages')"><span>💬</span>Messages</div>
+          <div class="app-icon" onclick="openApp('settings')"><span>⚙️</span>Paramètres</div>
+        </div>
+      </div>
+      
+      <!-- Musique -->
+      <div id="music">
+        <button class="back-btn" onclick="goHome()">← Retour</button>
+        <h1>Musique</h1>
+        <p>Pas encore de musique, mais bientôt ! 🎶</p>
+      </div>
+      
+      <!-- Messages -->
+      <div id="messages">
+        <button class="back-btn" onclick="goHome()">← Retour</button>
+        <h1>Messages</h1>
+        <div class="message">
+          <p><strong>Alice:</strong> Salut, ça va ?</p>
+          <p><strong>Bob:</strong> Hé, prêt pour Minecraft ?</p>
+          <p><em>(Pas de vrais messages pour le moment)</em></p>
+        </div>
+      </div>
+      
+      <!-- Paramètres -->
+      <div id="settings">
+        <button class="back-btn" onclick="goHome()">← Retour</button>
+        <h1>Paramètres</h1>
+        <p>Interface en développement...</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openApp(appId) {
+      document.querySelectorAll('#screen > div').forEach(div => {
+        div.classList.remove('active');
+      });
+      document.getElementById(appId).classList.add('active');
+    }
+    function goHome() {
+      openApp('home');
+    }
+  </script>
+</body>
 </html>
